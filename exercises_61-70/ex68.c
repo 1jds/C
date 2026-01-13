@@ -8,21 +8,8 @@ int main(void) {
   for (int i = 0; i <= 10; i++) {
     int pos_pow = pow(2, i);
     double neg_pow = pow(2, -i);
-    if (i < 10) {
-      printf("| %d   ", i);
-    } else {
-      printf("| %d  ", i);
-    }
-    
-    if (pos_pow < 10) {
-      printf("| %d     | %lf              |\n", pos_pow, neg_pow);
-    } else if (pos_pow < 100) {
-      printf("| %d    | %lf              |\n", pos_pow, neg_pow);
-    } else if (pos_pow < 1000) {
-      printf("| %d   | %lf              |\n", pos_pow, neg_pow);
-    } else {
-      printf("| %d  | %lf              |\n", pos_pow, neg_pow);
-    }
+    printf("| %-4d", i);
+    printf("| %-5d | %-22lf|\n", pos_pow, neg_pow);
   }
 
   puts("=======================================");
