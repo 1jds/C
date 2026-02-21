@@ -5,7 +5,7 @@ int main(void) {
   int blanks_count = 0, tabs_count = 0, newlines_count = 0;
   int c;
 
-  printf("Input a few works/tabs/newlines. Type Ctrl+D to EOF:\n");
+  printf("Input a few works/tabs/newlines. Type Enter and then Ctrl+D to EOF:\n");
   while ((c = getchar()) != EOF) {
     if (c == '\n') newlines_count++;
     if (c == '\t') tabs_count++;
