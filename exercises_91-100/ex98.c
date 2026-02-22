@@ -9,14 +9,14 @@ int main(void) {
   printf("Input some text (Enter to print words, Ctrl+D to exit):\n");
 
   while ((c = getchar()) != EOF) {
-    if (!is_in_word && isalnum(c)) {   // Start of a word
+    if (!is_in_word && !isspace((unsigned char)c)) {   // Start of a word
       is_in_word = 1;
       printf("%c", c);
-    } else if (is_in_word && isalnum(c)) {   // Middle or end of a word
+    } else if (is_in_word && !isspace((unsigned char)c)) {   // Middle or end of a word
       printf("%c", c);
-    } else if (is_in_word && !isalnum(c)) {   // Whitespace after a word
-      printf("\n");
+    } else if (is_in_word && isspace((unsigned char)c)) {   // Whitespace after a word
       is_in_word = 0;
+      printf("\n");
     }
   }
 
@@ -28,7 +28,7 @@ NOTE: A simpler approach could be to just append all isalnum(c) and put a newlin
 but this wouldn't handle edgecases very well (e.g. to spaces in a row, leading whitespace, etc.)
 My first implementation is OK. However, some testing shows that it doesn't include punctuation (because
 of what isalnum() includes and excludes). Another implementation (no doubt with its own drawbacks) I will
-try is to use isspace().
+try is to use isspace(). The second implementation with isspace() works a lot better.
 
 
 98. Print each word of input text on a new line
