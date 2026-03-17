@@ -6,6 +6,7 @@
 Find all of the primes between 1 and 20
 multiple them by themselves over and over until they go above 20
 get the product of all of that
+In the end, I looked up a better way...
 */
 
 struct TestCase {
@@ -70,7 +71,7 @@ void run_test_cases(void) {
     if (result == tests[i].expected) {
       printf("Test %d PASSED\n", i);
     } else {
-      printf("Test %d FAILED: expected %d got %d\n",
+      printf("Test %d FAILED: expected %lld got %lld\n",
              i,
              tests[i].expected,
              result);
