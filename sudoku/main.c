@@ -9,11 +9,17 @@ typedef struct Tile {
   int poss_values[9];
 } Tile;
 
-int sample_board[] = {2, 4, 9, 7, 3, 0, 0, 0, 6, 0, 0, 5, 0, 4, 0, 8, 2,
-                      7, 1, 0, 0, 2, 0, 6, 0, 0, 3, 0, 0, 0, 4, 7, 0, 6,
-                      8, 0, 0, 2, 0, 6, 0, 5, 0, 1, 0, 0, 6, 3, 0, 9, 2,
-                      0, 0, 0, 5, 0, 0, 8, 0, 4, 0, 0, 1, 4, 1, 8, 0, 2,
-                      0, 9, 0, 0, 3, 0, 0, 0, 1, 9, 2, 4, 8};
+int sample_board_one_star_1[] = {
+    2, 4, 9, 7, 3, 0, 0, 0, 6, 0, 0, 5, 0, 4, 0, 8, 2, 7, 1, 0, 0,
+    2, 0, 6, 0, 0, 3, 0, 0, 0, 4, 7, 0, 6, 8, 0, 0, 2, 0, 6, 0, 5,
+    0, 1, 0, 0, 6, 3, 0, 9, 2, 0, 0, 0, 5, 0, 0, 8, 0, 4, 0, 0, 1,
+    4, 1, 8, 0, 2, 0, 9, 0, 0, 3, 0, 0, 0, 1, 9, 2, 4, 8};
+
+int sample_board_two_stars_1[] = {
+    0, 0, 0, 0, 0, 3, 9, 6, 8, 0, 0, 4, 6, 2, 0, 5, 1, 0, 0, 8, 7,
+    0, 5, 0, 0, 0, 2, 0, 0, 0, 2, 7, 0, 0, 0, 9, 7, 1, 0, 0, 0, 0,
+    0, 2, 4, 9, 0, 0, 0, 1, 5, 0, 0, 0, 5, 0, 0, 0, 8, 0, 4, 3, 0,
+    0, 2, 3, 0, 6, 9, 7, 0, 0, 1, 6, 8, 4, 0, 0, 0, 0, 0};
 
 void check_for_sole_possible_values_and_update_final_values(Tile board[]) {
   for (int i = 0; i < 81; i++) {
@@ -36,7 +42,8 @@ void check_for_sole_possible_values_and_update_final_values(Tile board[]) {
   }
 }
 
-void use_final_values_to_limit_possible_values_in_square(Tile board[]) {
+void use_final_values_to_limit_possible_values_in_square_row_or_column(
+    Tile board[]) {
   for (int i = 0; i < 81; i++) {
     if (board[i].final_value != 0) {
       for (int j = 0; j < 81; j++) {
@@ -59,7 +66,7 @@ void update_possible_values_if_final_value_exists(Tile board[]) {
   }
 }
 
-void load_initial_board_state(Tile board[], int sample_board[]) {
+void place_starting_numbers(Tile board[], int sample_board[]) {
   for (int i = 0; i < 81; i++) {
     board[i].final_value = sample_board[i];
   }
@@ -87,7 +94,7 @@ void print_board(Tile board[]) {
   printf("\n");
 }
 
-void pre_populate_board(Tile board[]) {
+void set_board_initial_blank_state(Tile board[]) {
   int curr_row = 1;
   int curr_col = 1;
   int squares_top_mid_bottom_offset = 0;
@@ -152,18 +159,23 @@ void test_print_one_tile_of_prepopulation(Tile board[], int tile_to_show) {
 
 int main(void) {
   Tile board[81];
-  pre_populate_board(board);
-  test_print_one_tile_of_prepopulation(board, 1);
-  test_print_one_tile_of_prepopulation(board, 10);
-  load_initial_board_state(board, sample_board);
-  update_possible_values_if_final_value_exists(board);
-  use_final_values_to_limit_possible_values_in_square(board);
-  test_print_one_tile_of_prepopulation(board, 1);
-  test_print_one_tile_of_prepopulation(board, 10);
-  check_for_sole_possible_values_and_update_final_values(board);
-  update_possible_values_if_final_value_exists(board);
-  test_print_one_tile_of_prepopulation(board, 1);
-  test_print_one_tile_of_prepopulation(board, 10);
+  set_board_initial_blank_state(board);
+  print_board(board);
+  place_starting_numbers(board, sample_board_two_stars_1);
+  print_board(board);
+
+  // Start with a fixed number of iterations, but this would ideally have a stop
+  // condition somehow... possibly a return value...???
+  for (int i = 0; i < 10; i++) {
+    update_possible_values_if_final_value_exists(board);
+    use_final_values_to_limit_possible_values_in_square_row_or_column(board);
+    check_for_sole_possible_values_and_update_final_values(board);
+    print_board(board);
+  }
+
+  // update_possible_values_if_final_value_exists(board);
+  // test_print_one_tile_of_prepopulation(board, 1);
+  // test_print_one_tile_of_prepopulation(board, 10);
   print_board(board);
 
   return 0;
